@@ -7,6 +7,8 @@ import { useRequest } from 'vue-request';
 
 import BigNumber from "bignumber.js";
 
+import { precision } from "../components/Types";
+
 function reloadPage() {
   location.reload();
 }
@@ -56,10 +58,9 @@ onMounted(() => {
     pollingWhenHidden: false,
     onSuccess: (val: any) => {
       let bal = new BigNumber(val.balance)
-      let intt = new BigNumber('100000000000000')
-      let hh = bal.div(intt).toPrecision(3).toString();
+      let intt = new BigNumber(precision)
+      let hh = bal.div(intt).toFixed(2)
       state.balance = hh
-
       state.epoch = val.epoch;
     },
     onError: err => {

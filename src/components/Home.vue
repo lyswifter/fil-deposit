@@ -5,9 +5,13 @@ import HeaderView from "../components/Header.vue";
 
 import { ElMessage } from "element-plus";
 
+import BigNumber from "bignumber.js";
+
+import { precision } from "../components/Types";
+
 defineProps<{ msg: string }>()
 
-let state = reactive({ input: '', contract: null, balance: 0, epoch: 0 })
+let state = reactive({ input: '', contract: null, balance: '', epoch: 0 })
 
 const contractAddr = "0xc7C6C6a1c8F6D86A85db1c5dD5B8072610d75D57";
 const abi = [
@@ -23,7 +27,7 @@ async function depositAction() {
 
   contract.deposit(account, { value: ethers.parseEther(state.input) }).then((val) => {
     console.log(val)
-    
+
     ElMessage.info("deposit successfully.")
   }).catch((err) => {
     console.log(err)
@@ -51,7 +55,11 @@ function queryBal() {
 
     window.provider.getBalance(account).then((val: any) => {
       console.log(val)
-      state.balance = val
+
+      let bal = new BigNumber(val)
+      let intt = new BigNumber(precision)
+      let hh = bal.div(intt).toFixed(2)
+      state.balance = hh
     })
   }
 }
