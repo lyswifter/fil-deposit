@@ -28,7 +28,8 @@ async function depositAction() {
   contract.deposit(account, { value: ethers.parseEther(state.input) }).then((val) => {
     console.log(val)
 
-    ElMessage.info("deposit successfully.")
+    // ElMessage.info("deposit successfully.")
+    ElMessage.info("deposit message published.")
   }).catch((err) => {
     console.log(err)
   })
@@ -37,11 +38,12 @@ async function depositAction() {
 async function withdrawAction() {
   let contract = new ethers.Contract(contractAddr, abi, window.singer)
 
-  contract.withdraw().then((val) => {
+  contract.withdraw({ gasLimit: 80000000 }).then((val) => {
     console.log(val)
     queryBal()
 
-    ElMessage.info("withdraw successfully.")
+    // ElMessage.info("withdraw successfully.")
+    ElMessage.info("withdraw message published.")
   }).catch((err) => {
     console.log(err)
     queryBal()
